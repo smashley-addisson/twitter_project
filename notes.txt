@@ -1,0 +1,11 @@
+Flask
+-------
+* app will run from 'if name == main' portion on bottom
+* 
+
+Streamer
+--------
+* runs from 'experiment.py'
+* pulls in from 'config.json' for hashtags
+* 'on_data' function limits the number of tweets from 'self.tweet_limit' number
+*  
