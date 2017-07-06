@@ -9,3 +9,11 @@ Streamer
 * pulls in from 'config.json' for hashtags
 * 'on_data' function limits the number of tweets from 'self.tweet_limit' number
 *  
+
+Postgresql
+-----------
+* make sure postgresql service is on (for windows)
+* login with 'psql -U postgres'
+	# password: password
+* list all db's -> \list
+* connect to db -> \connect my_database
