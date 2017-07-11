@@ -14,6 +14,11 @@ Postgresql
 -----------
 * make sure postgresql service is on (for windows)
 * login with 'psql -U postgres'
-	# password: password
+    # password: password
+* (For linux) sudo service postgresql start 
+    # sudo -su postgres
+    # psql
+    # The postgres password is 'password'
 * list all db's -> \list
 * connect to db -> \connect my_database
+
