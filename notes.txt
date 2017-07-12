@@ -1,3 +1,5 @@
+## Check for domain scanner code here: https://github.com/clairmont32/VT-Domain-Scanner
+
 Flask
 -------
 * app will run from 'if name == main' portion on bottom
