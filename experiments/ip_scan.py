@@ -1,6 +1,6 @@
 import json, urllib
 
-ipaddress = '90.156.201.27'
+ipaddress = '104.24.127.207'
 
 url = 'http://www.virustotal.com/vtapi/v2/ip-address/report'
 parameters = {
@@ -12,7 +12,7 @@ parameters = {
 response = urllib.urlopen('%s?%s' % (url, urllib.urlencode(parameters))).read() 
 response_dict = json.loads(response)
 
-# print response_dict
+print response_dict
 
 # harvest import info from JSON resopnse
 positiveResults = 0
@@ -28,5 +28,5 @@ except TypeError: #if no results found program throws a TypeError
 positiveResults = str(positiveResults) 
 totalResults = str(totalResults)
 
-print(positiveResults + '/' + totalResults + ' total AV detection ratio')
+# print(positiveResults + '/' + totalResults + ' total AV detection ratio')
 

@@ -1,4 +1,3 @@
-## Check for domain scanner code here: https://github.com/clairmont32/VT-Domain-Scanner
 
 Flask
 -------
@@ -42,3 +41,8 @@ Postgresql
 * list all tables -> \d
 * insert statement -> INSERT INTO link (url, name) VALUES ('http://www.postgresqltutorial.com','PostgreSQL Tutorial');
 
+Virustotal
+------------
+* https://www.virustotal.com/latest-scan/<resource>
+    # This will output the scan of the sha-1, sha256, etc. from undetected_downloaded_samples
+    ## Still don't know how to decipher an exe from the other files
