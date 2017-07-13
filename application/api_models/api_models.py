@@ -21,12 +21,52 @@ class StdOutListener(StreamListener):
     def __init__(self, tweet_limit):
         self.tweet_limit = tweet_limit
         self.current_tweet_number = 1
+        self.urls = {}
+        self.username = ''
+        self.created_at = ''
+        self.text = ''
+        self.followers_count = 0
 
+    def allocate_urls(self, data):
+        current_tweet_urls = []
+        # self.urls[self.current_tweet_number] = 
+        current_tweet_urls.append(data["user"]["url"])
+        
+        if "retweeted_status" in data:
+            current_tweet_urls.append(data["retweeted_status"]["entities"]["urls"][0]["expanded_url"])
+        self.urls[self.current_tweet_number] = current_tweet_urls
+        return self.urls
+
+    def allocate_username(self,data):
+        self.username = data["user"]["screen_name"]
+        return self.username
+
+    def allocate_created_time(self,data):
+        self.created_at = data["created_at"]
+        return self.created_at
+
+    def allocate_tweet_text(self,data):
+        self.text = data["text"]
+        return self.text
+
+    def allocate_followers_count(self,data):
+        self.followers_count = data["user"]["followers_count"]
+        return str(self.followers_count)
+
+    # This method acts as our interface/duck type
     def on_data(self, data):
-        print data
+        d = json.loads(data)
+        # print data
         print "\n" + str(self.current_tweet_number) + "\n"
+        print self.allocate_urls(d)
+        print self.allocate_username(d)
+        print self.allocate_created_time(d)
+        print self.allocate_tweet_text(d)
+        print self.allocate_followers_count(d)
+
         if self.current_tweet_number == self.tweet_limit:
             return False
+        
         self.current_tweet_number += 1
         return True
 
