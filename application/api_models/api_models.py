@@ -21,41 +21,38 @@ class StdOutListener(StreamListener):
     def __init__(self, tweet_limit):
         self.tweet_limit = tweet_limit
         self.current_tweet_number = 1
-        self.urls = {}
         self.username = ''
         self.created_at = ''
         self.text = ''
         self.followers_count = 0
+        self.stream_structure = {}
 
     def allocate_urls(self, data):
         current_tweet_urls = []
-        # self.urls[self.current_tweet_number] = 
         current_tweet_urls.append(data["user"]["url"])
         
         if "retweeted_status" in data:
-            current_tweet_urls.append(data["retweeted_status"]["entities"]["urls"][0]["expanded_url"])
-        self.urls[self.current_tweet_number] = current_tweet_urls
-        return self.urls
+            # Below conditional is fastest way to check for empty list
+            if data["retweeted_status"]["entities"]["urls"]:
+                current_tweet_urls.append(data["retweeted_status"]["entities"]["urls"][0]["expanded_url"])
+        return current_tweet_urls
 
     def allocate_username(self,data):
-        self.username = data["user"]["screen_name"]
-        return self.username
+        return data["user"]["screen_name"]
 
     def allocate_created_time(self,data):
-        self.created_at = data["created_at"]
-        return self.created_at
+        return data["created_at"]
 
     def allocate_tweet_text(self,data):
-        self.text = data["text"]
-        return self.text
+        return data["text"]
 
     def allocate_followers_count(self,data):
-        self.followers_count = data["user"]["followers_count"]
-        return str(self.followers_count)
+        return str(data["user"]["followers_count"])
 
     # This method acts as our interface/duck type
     def on_data(self, data):
         d = json.loads(data)
+        # For debugging:
         # print data
         print "\n" + str(self.current_tweet_number) + "\n"
         print self.allocate_urls(d)
@@ -63,6 +60,15 @@ class StdOutListener(StreamListener):
         print self.allocate_created_time(d)
         print self.allocate_tweet_text(d)
         print self.allocate_followers_count(d)
+        
+        # Build stream_structure
+        self.stream_structure[self.current_tweet_number] = {
+            "urls" : self.allocate_urls(d),
+            "username" : self.allocate_username(d),
+            "created_at" : self.allocate_created_time(d),
+            "text" : self.allocate_tweet_text(d),
+            "followers_count" : self.allocate_followers_count(d)
+        }
 
         if self.current_tweet_number == self.tweet_limit:
             return False
@@ -73,18 +79,18 @@ class StdOutListener(StreamListener):
     def on_error(self, status):
         print status
 
-
-if __name__ == '__main__':
+# ---------------TESTING-------------------
+# if __name__ == '__main__':
 
     #This handles Twitter authetification and the connection to Twitter Streaming API
-    l = StdOutListener(3) 
-    auth = OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
-    stream = Stream(auth, l)
+    # l = StdOutListener(3) 
+    # auth = OAuthHandler(consumer_key, consumer_secret)
+    # auth.set_access_token(access_token, access_token_secret)
+    # stream = Stream(auth, l)
 
     #This filters Twitter Streams to capture data by the keywords from a config file (config.json)
     
-    with open('config.json') as data_file:
-        data = json.load(data_file)
-        stream.filter(track=data["hashtags"])
+    # with open('config.json') as data_file:
+    #     data = json.load(data_file)
+    #     stream.filter(track=data["hashtags"])
         
